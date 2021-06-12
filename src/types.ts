@@ -1,6 +1,8 @@
 export type TabStyle = "kendo" | "custom";
 
-export type PageType = 0 | 1 | 2;
+export const PageTypeList = ["paris", "nyc","tallinn"] as const;
+export type PageType = (typeof PageTypeList)[number];
+// export type PageType = "paris" | "nyc" | "tallinn";
 
 export interface AppState {
     page: PageType;
