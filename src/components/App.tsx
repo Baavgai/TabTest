@@ -1,7 +1,12 @@
 import React from 'react';
-import { AppState as State, AppController as Controller, AppProps as Props } from "../types";
-
+import { TabStyle } from "../types";
 import { KendoTabs } from "./KendoTabs";
+import { CustomTabs } from "./CustomTabs";
+
+interface Props {
+    tabStyle: TabStyle;
+    setTabStyle: (tabStyle: TabStyle) => void;
+}
 
 const SelectTabStyle = (p: Props) =>
     <button
@@ -19,15 +24,25 @@ const View = (p: Props) =>
             <div className="right"><SelectTabStyle {...p} /></div>
         </div>
         <div className="container-fluid view-port">
-            <KendoTabs {...p} />
+            {p.tabStyle === "custom" ? <CustomTabs /> : <KendoTabs />}
         </div>
     </>;
 
 export const App = () => {
-    const [state, setState] = React.useState<State>({ page: 1, tabStyle: "kendo" });
-    const ctrl: Controller = {
-        setPage: page => setState(s => ({ ...s, page })),
-        setTabStyle: tabStyle => setState(s => ({ ...s, tabStyle }))
-    };
-    return <View {...state} {...ctrl} />;
+    const [tabStyle, setTabStyle] = React.useState<TabStyle>("kendo");
+    return <View tabStyle={tabStyle} setTabStyle={setTabStyle} />;
+};
+
+/*
+export interface AppState {
+    page: PageType;
+    tabStyle: TabStyle;
 }
+
+export interface AppController {
+    setPage: (page: PageType) => void;
+    setTabStyle: (tabStyle: TabStyle) => void;
+}
+
+export type AppProps = AppState & AppController;
+*/
